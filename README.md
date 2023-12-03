@@ -1,2 +1,2 @@
-# algo
-Study algo
+# Algorithms
+Study Algorithms
