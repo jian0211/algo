@@ -11,3 +11,4 @@ const isPrime = (target) => {
     };
     return true;
 };
+
