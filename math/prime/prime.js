@@ -12,3 +12,4 @@ const isPrime = (target) => {
     return true;
 };
 
+module.exports = isPrime;
