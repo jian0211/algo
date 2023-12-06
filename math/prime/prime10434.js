@@ -23,9 +23,9 @@
    3 383
    4 1000
  */
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
-const testCaseCount = input.shift();
-const caseGroups = input.map((caseGroup) => caseGroup.split(" "));
+// const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+// const testCaseCount = input.shift();
+// const caseGroups = input.map((caseGroup) => caseGroup.split(" "));
 const testArr = [[1,1],[2,7],[3,383],[4,1000]];
 
 // 소수 판정함수.
@@ -38,10 +38,11 @@ const isPrime = (target) => {
 };
 
 const isHappyPrime = (target,maximun) => {
-    if(target === 1 || maximun === 5) return false;
+    if(target === 1 ) return true;
+    if(maximun === 10 ) return false;
     const targetToStringArr = [...target+""]; 
     const sumOfSquares = targetToStringArr.reduce((p,c) => p + c * c, 0);
-    return isHappyPrime(sumOfSquares,maximun++);
+    return isHappyPrime(sumOfSquares,maximun + 1);
 };
 
 
