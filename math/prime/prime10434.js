@@ -24,9 +24,9 @@
    4 1000
  */
 // const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
-// const testCaseCount = input.shift();
+// const primesCaseCount = input.shift();
 // const caseGroups = input.map((caseGroup) => caseGroup.split(" "));
-const testArr = [[1,1],[2,7],[3,383],[4,1000]];
+const primesArr = [[1,1],[2,7],[3,383],[4,1000]];
 
 // 소수 판정함수.
 const isPrime = (target) => {
@@ -37,12 +37,13 @@ const isPrime = (target) => {
     return true;
 };
 
-const isHappyPrime = (target,maximun) => {
-    if(target === 1 ) return true;
-    if(maximun === 10 ) return false;
+const isHappyPrime = (target, primes = []) => {
+    if( target === 1 ) return true; 
+    if(primes.includes(target)) return false;
+    primes.push(target);
     const targetToStringArr = [...target+""]; 
     const sumOfSquares = targetToStringArr.reduce((p,c) => p + c * c, 0);
-    return isHappyPrime(sumOfSquares,maximun + 1);
+    return isHappyPrime(sumOfSquares, primes);
 };
 
 
@@ -52,6 +53,6 @@ const prime10434 = (target) => {
 };
 
 
-testArr.forEach((caseGroup) => {
+primesArr.forEach((caseGroup) => {
     console.log(`${caseGroup[0]} ${caseGroup[1]} ${prime10434(+caseGroup[1])}`);
 });
