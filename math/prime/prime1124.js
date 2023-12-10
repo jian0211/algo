@@ -14,42 +14,48 @@
  * 
  */
 
-const inputs = require('fs').readFileSync('/dev/stdin').toString().trim().split(' '); 
-// const inputs = [2, 10];  
+// const inputs = require('fs').readFileSync('/dev/stdin').toString().trim().split(' '); 
 
 const solution = (startNum, lastNum) => {
-    let result = 0;
+    const primes = sieveOfEratosthenes(lastNum); // 소수인 경우 true, 아닌 경우 false인 배열
+    let underprimeCount = 0;
     while(startNum <= lastNum){
-        const _primeFactors = primeFactors(startNum);
-        if(isPrime(_primeFactors.length)){
-            const hasPrimeInPrimeFactors = [...new Set(_primeFactors)].find(prime => isPrime(prime));
-            if(hasPrimeInPrimeFactors) result ++;
+        // startNum이 소수가 아니면서 약수들의 갯수가 소수일 경우.
+        if(!primes[startNum] && primes[primeFactors(startNum).length]){
+            underprimeCount++;
         }
         startNum++;
     }
-    return result;
+    return underprimeCount
 };
 
-const isPrime = (target) => {
-    if(target === 1) return false;
-    for (let i = 2; i * i <= target; i++) {
-        if(target % i === 0 ) return false;        
-    };
-    return true;
+/**
+ * 1을 제외한 타겟의 약수를 구하는 함수. 
+ */
+const primeFactors = (target, dividNum = 2, primeFactorArr = []) => {
+    if(target === 1) return primeFactorArr; 
+    const dividedTarget = target / dividNum;  
+    return Number.isInteger(dividedTarget) 
+        ? primeFactors(dividedTarget, 2, [...primeFactorArr, dividNum])
+        : primeFactors(target, dividNum + 1, primeFactorArr);
+};
+
+function sieveOfEratosthenes(n) {
+    const primes = Array(n + 1).fill(true); 
+    primes[0] = primes[1] = false;
+    for (let i = 2; i * i <= n; i++) {
+        if (!primes[i]) continue
+        for(let j = i * 2; j <= n; j += i){
+            primes[j] = false;
+        }
+    }
+    return primes;
 }
 
-const primeFactors = (target, dividNum = 2, primeFactorArr = []) => {
-    if(target === 1) return primeFactorArr;
-    const dividedTarget = target / dividNum;  
-    if(Number.isInteger(dividedTarget)){
-        return primeFactors(dividedTarget, 2, [...primeFactorArr, dividNum])
-    };
-    return primeFactors(target, dividNum + 1, primeFactorArr);
-};
 
-// console.log(solution(2,10));
-// console.log(solution(100,105));
-// console.log(solution(17,17));
-// console.log(solution(123,456));
-solution(inputs[0],inputs[1]);
 
+console.log(solution(2,10));
+console.log(solution(100,105));
+console.log(solution(17,17));
+console.log(solution(123,456));
+// console.log(solution(inputs[0],inputs[1]));
